@@ -19,5 +19,5 @@ public interface Account {
   /**
    * <p>Authenticates an {@link Account} with an {@link Organisation}.</p>
    */
-  String authentification(String username, String password);
+  void authentification(String username, String password);
 }
