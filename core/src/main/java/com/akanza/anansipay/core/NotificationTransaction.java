@@ -15,21 +15,29 @@ import java.time.LocalDateTime;
 public interface NotificationTransaction extends Transaction {
 
   /**
+   * <p>Transaction status.</p>
+   *
    * @return Transaction status
    */
   String status();
 
   /**
+   * <p>Transaction created date.</p>
+   *
    * @return Date of creation of the transaction notification
    */
   LocalDateTime createdDate();
 
   /**
+   * <p>Transaction updated date.</p>
+   *
    * @return Date of update of the transaction notification
    */
   LocalDateTime updatedDate();
 
   /**
+   * <p>Transaction cancel date.</p>
+   *
    * @return Date of cancel of the transaction notification
    */
   LocalDateTime canceledDate();

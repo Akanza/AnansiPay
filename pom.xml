@@ -30,6 +30,8 @@
     <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec
     </sonar.jacoco.itReportPath>
 
+    <puppycrawl-checkstyle-version>8.40</puppycrawl-checkstyle-version>
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <kotlin.version>1.4.30</kotlin.version>
     <kotlin.code.style>official</kotlin.code.style>
@@ -58,8 +60,6 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>src/main/kotlin</sourceDirectory>
-    <testSourceDirectory>src/test/kotlin</testSourceDirectory>
 
     <plugins>
       <plugin>
@@ -69,6 +69,32 @@
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.source}</target>
         </configuration>
+        <executions>
+          <!-- Replacing default-compile as it is treated specially by maven -->
+          <execution>
+            <id>default-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- Replacing default-testCompile as it is treated specially by maven -->
+          <execution>
+            <id>default-testCompile</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>java-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>java-test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -80,7 +106,7 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${maven-jacoco.version}</version>
         <executions>
-          <!-- Préparer Agent Jacoco -->
+          <!-- Prepare Agent Jacoco -->
           <execution>
             <id>agent-for-ut</id>
             <goals>
@@ -91,7 +117,7 @@
               <destFile>${sonar.jacoco.reportPaths}</destFile>
             </configuration>
           </execution>
-          <!-- Préparer Agent Integration Jacoco -->
+          <!-- Prepare Agent Integration Jacoco -->
           <execution>
             <id>agent-for-it</id>
             <phase>pre-integration-test</phase>
@@ -103,7 +129,7 @@
               <destFile>${sonar.jacoco.itReportPath}</destFile>
             </configuration>
           </execution>
-          <!-- Effectuer le rapport des test unitaire -->
+          <!-- Performing the unit test report -->
           <execution>
             <id>post-unit-test</id>
             <phase>test</phase>
@@ -114,7 +140,7 @@
               <dataFile>${sonar.jacoco.reportPaths}</dataFile>
             </configuration>
           </execution>
-          <!-- Effectuer le rapport des test unitaire d'intégration -->
+          <!-- Report on unit integration tests -->
           <execution>
             <id>post-integration-test</id>
             <phase>verify</phase>
@@ -125,7 +151,7 @@
               <dataFile>${sonar.jacoco.itReportPath}</dataFile>
             </configuration>
           </execution>
-          <!-- Effectuer l'agrégation des rapports des tests unitaires-->
+          <!-- Aggregating unit test reports -->
           <execution>
             <id>aggregate-test</id>
             <phase>test</phase>
@@ -133,7 +159,7 @@
               <goal>report-aggregate</goal>
             </goals>
           </execution>
-          <!-- Effectuer l'agrégation des rapports des tests d'intégration-->
+          <!-- Aggregating integration test reports -->
           <execution>
             <id>aggregate-integration-test</id>
             <phase>verify</phase>
@@ -156,6 +182,8 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Static analysis of the code -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -163,15 +191,23 @@
         <configuration>
           <configLocation>google_checks.xml</configLocation>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>${puppycrawl-checkstyle-version}</version>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
-            <phase>verify</phase>
+            <phase>test</phase>
             <goals>
               <goal>check</goal>
             </goals>
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
@@ -198,6 +234,8 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Kotlin tools -->
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
@@ -209,6 +247,12 @@
             <goals>
               <goal>compile</goal>
             </goals>
+            <configuration>
+              <sourceDirs>
+                <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                <sourceDir>${project.basedir}/src/main/java</sourceDir>
+              </sourceDirs>
+            </configuration>
           </execution>
           <execution>
             <id>test-compile</id>
@@ -216,21 +260,58 @@
             <goals>
               <goal>test-compile</goal>
             </goals>
+            <configuration>
+              <sourceDirs>
+                <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+                <sourceDir>${project.basedir}/src/test/java</sourceDir>
+              </sourceDirs>
+            </configuration>
           </execution>
         </executions>
       </plugin>
       <plugin>
-        <groupId>com.github.ozsie</groupId>
-        <artifactId>detekt-maven-plugin</artifactId>
-        <version>${maven-detekt.version}</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.0.0</version>
         <executions>
           <execution>
+            <id>ktlint</id>
             <phase>verify</phase>
+            <configuration>
+              <target name="ktlint">
+                <java taskname="ktlint" dir="${basedir}" fork="true" failonerror="true"
+                  classname="com.pinterest.ktlint.Main" classpathref="maven.plugin.classpath">
+                  <arg value="src/**/*.kt"/>
+                </java>
+              </target>
+            </configuration>
             <goals>
-              <goal>check</goal>
+              <goal>run</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>ktlint-format</id>
+            <configuration>
+              <target name="ktlint">
+                <java taskname="ktlint" dir="${basedir}" fork="true" failonerror="true"
+                  classname="com.pinterest.ktlint.Main" classpathref="maven.plugin.classpath">
+                  <arg value="-F"/>
+                  <arg value="src/**/*.kt"/>
+                </java>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.pinterest</groupId>
+            <artifactId>ktlint</artifactId>
+            <version>0.40.0</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>

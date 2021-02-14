@@ -13,11 +13,15 @@ package com.akanza.anansipay.core;
 public interface Organisation extends PaymentService {
 
   /**
+   * <p>Organisation name.</p>
+   *
    * @return Name of organisation
    */
   String name();
 
   /**
+   * <p>Organisation description.</p>
+   *
    * @return Description of organisation
    */
   String description();
@@ -28,6 +32,8 @@ public interface Organisation extends PaymentService {
   MerchantAccount connectMerchant();
 
   /**
+   * <p>Works like {@link #connectMerchant()}.</p>
+   *
    * @see #connectMerchant()
    */
   MerchantAccount connectMerchant(String merchantUsername, String merchantPassword);

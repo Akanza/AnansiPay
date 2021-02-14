@@ -6,18 +6,22 @@
 package com.akanza.anansipay.core;
 
 /**
+ * <p>Personal data of a user from an {@link Organisation}.</p>
+ *
  * @author Christian Amani 2021-02-07
  */
 public interface Account {
 
   /**
-   * @return the key from which the {@link Account} can use to access an {@link Organisation}'s
-   * service.
+   * <p>The key/token that authenticates the account with an {@link Organisation}.</p>
+   *
+   * @return <p>the key from which the {@link Account} can use to access an {@link Organisation}'s
+   * service.</p>
    */
   String key();
 
   /**
    * <p>Authenticates an {@link Account} with an {@link Organisation}.</p>
    */
-  String authentification(String username, String password);
+  void authentification(String username, String password);
 }

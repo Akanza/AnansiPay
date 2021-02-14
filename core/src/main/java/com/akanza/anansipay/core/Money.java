@@ -8,6 +8,8 @@ package com.akanza.anansipay.core;
 import javax.money.MonetaryAmount;
 
 /**
+ * <p>Works like {@link MonetaryAmount}.</p>
+ *
  * @author Christian Amani 2021-02-07
  * @see MonetaryAmount
  */
