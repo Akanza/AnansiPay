@@ -6,6 +6,9 @@
 package com.akanza.anansipay.core.adjemin;
 
 /**
+ * <p>Thrown when authentication of an {@link com.akanza.anansipay.core.Account} fails for some
+ * reason.</p>
+ *
  * @author Christian Amani 2021-02-10
  */
 class HttpAuthenticationException extends

@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * <p>Authentication class of an {@link com.akanza.anansipay.core.Account}.</p>
+ *
  * @author Christian Amani 2021-02-10
  */
 class HttpAuthentication {

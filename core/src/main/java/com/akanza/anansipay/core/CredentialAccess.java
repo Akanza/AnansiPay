@@ -15,11 +15,15 @@ import java.util.Optional;
 public interface CredentialAccess {
 
   /**
+   * <p>A username.</p>
+   *
    * @return Username credential
    */
   Optional<String> username();
 
   /**
+   * <p>A password.</p>
+   *
    * @return Password credential
    */
   Optional<String> password();

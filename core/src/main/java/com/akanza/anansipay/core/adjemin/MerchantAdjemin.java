@@ -10,6 +10,8 @@ import java.net.URI;
 import java.util.Map;
 
 /**
+ * <p>Merchant account for a customer of the Adjemin platform.</p>
+ *
  * @author Christian Amani 2021-02-10
  */
 public class MerchantAdjemin implements MerchantAccount {
@@ -20,6 +22,9 @@ public class MerchantAdjemin implements MerchantAccount {
   private final String password;
   private String key;
 
+  /**
+   * <p>Authenticate using the {@link #username} and {@link #password} during instantiation.</p>
+   */
   public MerchantAdjemin(String username, String password) {
     this.username = username;
     this.password = password;

@@ -13,11 +13,15 @@ package com.akanza.anansipay.core;
 public interface Operator {
 
   /**
+   * <p>Name of operator.</p>
+   *
    * @return Operator name
    */
   String name();
 
   /**
+   * <p>Description of operator.</p>
+   *
    * @return Operator description
    */
   String description();
