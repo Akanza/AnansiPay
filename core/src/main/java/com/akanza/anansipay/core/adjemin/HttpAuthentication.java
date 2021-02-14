@@ -67,8 +67,8 @@ class HttpAuthentication {
             });
       } else {
         throw new HttpAuthenticationException(
-            "An error occurred during account authentication ! \n The code status of the response is : "
-                + statusCode);
+            "An error occurred during account authentication ! \n The code status of the response "
+                + "is : " + statusCode);
       }
     } catch (IOException | InterruptedException e) {
       Thread.currentThread().interrupt();
