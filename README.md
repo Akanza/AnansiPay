@@ -15,6 +15,16 @@ organisation into their applications without difficulty.
 * [CinetPay](https://cinetpay.com/)
 * [AdjeminPay](https://adjeminpay.net/)
 
+## Official sponsors
+
+### [INEX@](https://www.inexa-ci.com/)
+
+![LOGO INEX@](https://www.inexa-ci.com/wp-content/uploads/LOGO.png)
+
+INEXA (Intelligence and Expertise Africa) is a multidisciplinary software company that has developed
+complementary skills to meet the specific needs of its customers and their specific needs.
+evolution.
+
 ## Team
 
 * In 2021, [Amani Christian Cyrille Alves](https://github.com/DevAlves1993), Project architect
