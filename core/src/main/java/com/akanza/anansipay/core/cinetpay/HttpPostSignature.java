@@ -5,6 +5,7 @@
 
 package com.akanza.anansipay.core.cinetpay;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -61,7 +62,15 @@ class HttpPostSignature {
       httpResponse = this.httpClient.send(httpRequest, BodyHandlers.ofString());
       var statusCode = httpResponse.statusCode();
       if (statusCode == STATUS_CODE_OK || statusCode == STATUS_CODE_CREATED) {
-        return httpResponse.body();
+        var body = httpResponse.body();
+        var isJsonValid = isJsonValid(body);
+        if (isJsonValid) {
+          throw new HttpPostSignatureException(
+              "An error occurred while retrieving the signature ! \n The error response "
+                  + "is : " + body);
+        } else {
+          return body;
+        }
       } else {
         throw new HttpPostSignatureException(
             "An error occurred while retrieving the signature ! \n The code status of the response "
@@ -71,6 +80,16 @@ class HttpPostSignature {
       Thread.currentThread().interrupt();
       throw new HttpPostSignatureException(
           "An error occurred during retrieving the signature !", e);
+    }
+  }
+
+  private boolean isJsonValid(String content) {
+    try {
+      final ObjectMapper mapper = new ObjectMapper();
+      mapper.readTree(content);
+      return true;
+    } catch (IOException e) {
+      return false;
     }
   }
 }

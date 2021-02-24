@@ -14,11 +14,9 @@ import com.akanza.anansipay.core.MerchantAccount;
  */
 public class MerchantCinetPay implements MerchantAccount {
 
-  private final String siteId;
   private final String apiKey;
 
-  public MerchantCinetPay(String siteId, String apiKey) {
-    this.siteId = siteId;
+  public MerchantCinetPay(String apiKey) {
     this.apiKey = apiKey;
   }
 
@@ -48,9 +46,7 @@ public class MerchantCinetPay implements MerchantAccount {
    * @return A transaction payment form
    */
   public PaymentFormTransaction paymentForm(
-      final SignatureTransactionBuilder signatureTransactionBuilder) {
-    var signatureTransaction = new SignatureTransaction(this.siteId, this.apiKey,
-        signatureTransactionBuilder);
+      final SignatureTransaction signatureTransaction) {
     var httpPostSignature = new HttpPostSignature();
     var signature = httpPostSignature.post(signatureTransaction);
     return new PaymentFormTransaction(signature,
