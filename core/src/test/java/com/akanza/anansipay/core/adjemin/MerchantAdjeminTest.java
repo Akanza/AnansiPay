@@ -15,17 +15,15 @@ import org.junit.jupiter.api.Test;
 class MerchantAdjeminTest {
 
   @Test
-  @DisplayName("Tests the authentication of an Adjemin account and verifies the existence of the obtained key.")
+  @DisplayName("Tests the capture of the httpAuthenticationException when an authentication fails..")
   void authentificationAndGetKey() {
     // Given
-    final var username = "username";
-    final var password = "password";
+    final var fakeUsername = "username";
+    final var fakePassword = "password";
 
     // When
     var httpAuthenticationException = Assertions
-        .assertThrows(HttpAuthenticationException.class, () -> {
-          new MerchantAdjemin(username, password);
-        });
+        .assertThrows(HttpAuthenticationException.class, () -> new MerchantAdjemin(fakeUsername, fakePassword));
 
     // Then
     var message = httpAuthenticationException.getMessage();
